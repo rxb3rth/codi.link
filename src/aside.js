@@ -1,8 +1,8 @@
 import { eventBus, EVENTS } from './events-controller.js'
 import { $, $$ } from './utils/dom.js'
 import * as Preview from './utils/WindowPreviewer'
-import Notification from './utils/notification.js'
 import { BUTTON_ACTIONS } from './constants/button-actions.js'
+import { copyToClipboard } from './utils/string.js'
 
 const $aside = $('aside')
 const $asideBar = $('.aside-bar')
@@ -23,8 +23,17 @@ const SIMPLE_CLICK_ACTIONS = {
   },
 
   [BUTTON_ACTIONS.copyToClipboard]: async () => {
-    await navigator.clipboard.writeText(window.location.href)
-    Notification.show({ type: 'info', message: 'Sharable URL has been copied to clipboard.' })
+    const url = new URL(window.location.href)
+    const urlToCopy = `https://codi.link${url.pathname}`
+    copyToClipboard(urlToCopy)
+  },
+
+  [BUTTON_ACTIONS.clearHistory]: () => {
+    eventBus.emit(EVENTS.CLEAR_HISTORY)
+  },
+
+  [BUTTON_ACTIONS.openNewInstance]: () => {
+    eventBus.emit(EVENTS.OPEN_NEW_INSTANCE)
   }
 }
 
@@ -42,6 +51,15 @@ const NON_SIMPLE_CLICK_ACTIONS = {
 
   [BUTTON_ACTIONS.showSettingsBar]: () => {
     showAsideBar('#settings')
+    $('.scroll-buttons-container').setAttribute('hidden', '')
+  },
+  [BUTTON_ACTIONS.showConsoleBar]: () => {
+    showAsideBar('#console')
+    $('.scroll-buttons-container').setAttribute('hidden', '')
+  },
+
+  [BUTTON_ACTIONS.showHistoryBar]: () => {
+    showAsideBar('#history')
     $('.scroll-buttons-container').setAttribute('hidden', '')
   }
 }

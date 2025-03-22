@@ -1,4 +1,3 @@
-
 export const DEFAULT_LAYOUT = {
   columnGutters: [{
     track: 1,
@@ -53,5 +52,12 @@ export const BOTTOM_LAYOUT = {
   rowGutters: [{
     track: 1,
     element: '.last-gutter'
+  }]
+}
+
+export const TABS_LAYOUT = {
+  columnGutters: [{
+    track: 1,
+    element: '.first-gutter'
   }]
 }
